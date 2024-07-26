@@ -40,48 +40,69 @@ def strToFloat(data):
 def draw(X: list, Y: list, imgpath=None):
     test = X['test']
     pred = X['pred']
+    diff = X['diff']
+    accu = X['accu']
     num = Y
 
-    ax: Axes
+    ax1: Axes
+    ax2: Axes
     fig: Figure
-    fig, ax = plt.subplots(figsize=(10, 6))
+    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(18, 8))
 
     # 对数据进行排序（以 num 为依据）
     sorted_indices = np.argsort(num)
     sorted_num = np.array(num)[sorted_indices]
+    sorted_accu = np.array(accu)[sorted_indices]
+    sorted_diff = np.array(diff)[sorted_indices]
     sorted_test = np.array(test)[sorted_indices]
     sorted_pred = np.array(pred)[sorted_indices]
 
-    ax.scatter(sorted_num, sorted_test, marker='.', color='b', label='test data')
-    ax.scatter(sorted_num, sorted_pred, s=1, marker=',', color='r', label='pred data')
 
-    ax.plot(sorted_num, sorted_test, linestyle='-', color='b', alpha=0.5)  # 使用透明度线
-    ax.plot(sorted_num, sorted_pred, linestyle='--', color='r', alpha=0.5)  # 使用透明度线
+    ax1.scatter(sorted_num, sorted_accu, marker='.', color='b', label="accuracy")
 
-    # 标注具体数值
-    for i in range(len(num)):
-        ax.annotate(f'{num[i]} | {test[i]:.2f}', (num[i], test[i]), textcoords="offset points", xytext=(0,5), ha='center', fontsize=8, color='b')
-        ax.annotate(f'{num[i]} | {pred[i]:.2f}', (num[i], pred[i]), textcoords="offset points", xytext=(0,5), ha='center', fontsize=8, color='r')
 
-    ax.set_xlabel('Request Number')
-    ax.set_ylabel('Predicted and Read process on manager node')
+
+    ax2.scatter(sorted_num, sorted_test, marker='.', color='r', label="accuracy data")
+    ax2.scatter(sorted_num, sorted_pred, marker='.', color='b', label="accuracy data")
+    ax2.plot(sorted_num, sorted_test, linestyle='-', color='b', alpha=0.2, label="test time")
+    ax2.plot(sorted_num, sorted_pred, linestyle='--', color='r', alpha=0.2, label="predicted time")
+
+
+    # ax2.errorbar(sorted_num, sorted_test, yerr=sorted_diff, fmt='.', color='b', ecolor='lightblue', elinewidth=1, capsize=2, label='Test Data Error')
+    # ax2.errorbar(sorted_num, sorted_pred, yerr=sorted_diff, fmt='.', color='r', ecolor='salmon', elinewidth=1, capsize=2, label='Pred Data Error')
+
+    #@ 标注具体数值
+    #@ Annotate specific numerical values
+
+    # for i in range(len(num)):
+    #     ax.annotate(f'{num[i]} | {test[i]:.2f}', (num[i], test[i]), textcoords="offset points", xytext=(0,5), ha='center', fontsize=8, color='b')
+    #     ax.annotate(f'{num[i]} | {pred[i]:.2f}', (num[i], pred[i]), textcoords="offset points", xytext=(0,5), ha='center', fontsize=8, color='r')
+
+    ax1.set_xlabel('Request Number')
+    ax1.set_ylabel('Accuracy')
+    ax1.set_title('Scatter plot of prediction accuracy distribution')
+
+    ax2.set_xlabel('Request Number')
+    ax2.set_ylabel('Test and prediction')
+    ax2.set_title('The relationship between processing time and the number of queued tasks on the manager node')
+
+    ax1.grid(True, linestyle='--', linewidth=0.5)
+    ax2.grid(True, linestyle='--', linewidth=0.5)
     
-    ax.grid(True, linestyle='--', linewidth=0.5)
-    
-    ax.legend()
-    
-    # fig.savefig(imgpath, format='png', dpi=300, bbox_inches='tight')
+    ax1.legend()
+    ax2.legend()
+
+    if imgpath:
+        fig.savefig(imgpath, format='png', dpi=300, bbox_inches='tight')
     
     plt.show()
 
     pass
 
-
-
 if __name__ == "__main__":
     dirpath = Path.cwd() / "results" / "result_processTime_waitTasks"
     file_suffix = ".xlsx"
-    filename = "RandomRequestNumberclientv5#loops1#requests_batch200#Thu-Jul-25-23-28-51-2024processTime#waitTasksresult" + file_suffix 
+    filename = "RandomRequestNumberclientv5#loops4#requests_batch200#Fri-Jul-26-18-36-52-2024processTime#waitTasks_v2result" + file_suffix 
 
     data = read_excel(dirpath, filename)
 
@@ -91,5 +112,4 @@ if __name__ == "__main__":
     pred = data['prediction']
     diff = data['difference']
 
-    draw({"test": test, "pred": pred}, num)
-    
+    draw({"test": test, "pred": pred, "diff": diff, "accu": accu}, num)

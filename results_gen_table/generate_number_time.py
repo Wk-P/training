@@ -58,10 +58,11 @@ def draw(X: list, Y: list, imgpath=None):
     ax.plot(sorted_num, sorted_test, linestyle='-', color='b', alpha=0.5)  # 使用透明度线
     ax.plot(sorted_num, sorted_pred, linestyle='--', color='r', alpha=0.5)  # 使用透明度线
 
-    # 标注具体数值
-    for i in range(len(num)):
-        ax.annotate(f'{num[i]} | {test[i]:.2f}', (num[i], test[i]), textcoords="offset points", xytext=(0,5), ha='center', fontsize=8, color='b')
-        ax.annotate(f'{num[i]} | {pred[i]:.2f}', (num[i], pred[i]), textcoords="offset points", xytext=(0,5), ha='center', fontsize=8, color='r')
+    #@ 标注具体数值
+    #@ Annotate specific numerical values
+    # for i in range(len(num)):
+    #     ax.annotate(f'{num[i]} | {test[i]:.2f}', (num[i], test[i]), textcoords="offset points", xytext=(0,5), ha='center', fontsize=8, color='b')
+    #     ax.annotate(f'{num[i]} | {pred[i]:.2f}', (num[i], pred[i]), textcoords="offset points", xytext=(0,5), ha='center', fontsize=8, color='r')
 
     ax.set_xlabel('Request Number')
     ax.set_ylabel('Predicted and Read process on manager node')
@@ -78,12 +79,10 @@ def draw(X: list, Y: list, imgpath=None):
 
 
 
-
-
 if __name__ == "__main__":
     dirpath = Path.cwd() / "results" / "result_requestNumber_processTime"
     file_suffix = ".xlsx"
-    filename = "RandomRequestNumberclientv5#loops1#requests_batch200#Thu-Jul-25-23-28-51-2024requestNumber#responseTimeresult" + file_suffix 
+    filename = "RandomRequestNumberclientv5#loops4#requests_batch200#Fri-Jul-26-18-36-52-2024requestNumber#responseTime_v2result" + file_suffix 
 
     data = read_excel(dirpath, filename)
 
