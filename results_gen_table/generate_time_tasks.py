@@ -48,7 +48,7 @@ def draw(X: list, Y: list, imgpath=None):
     ax2: Axes
     ax3: Axes
     fig: Figure
-    fig, (ax1, ax2, ax3) = plt.subplots(1, 3, figsize=(18, 8))
+    fig, (ax1, ax2, ax3) = plt.subplots(3, 1, figsize=(45, 28))
     # 对数据进行排序（以 num 为依据）
     sorted_indices = np.argsort(num)
     sorted_num = np.array(num)[sorted_indices]
@@ -61,8 +61,8 @@ def draw(X: list, Y: list, imgpath=None):
     ax1.scatter(sorted_num, sorted_accu, marker='.', color='b', label="accuracy")
 
     # fig2
-    ax2.scatter(sorted_num, sorted_test, marker='.', color='r', label="accuracy")
-    ax2.scatter(sorted_num, sorted_pred, marker='.', color='b', label="accuracy")
+    ax2.scatter(sorted_num, sorted_test, marker='.', color='b', label="real process time")
+    ax2.scatter(sorted_num, sorted_pred, marker='.', color='r', label="predicted process time")
     
     ax2.plot(sorted_num, sorted_test, linestyle='-', color='b', alpha=0.2, label="test time")
     ax2.plot(sorted_num, sorted_pred, linestyle='--', color='r', alpha=0.2, label="predicted time")
@@ -117,4 +117,5 @@ if __name__ == "__main__":
     pred = data['prediction']
     diff = data['difference']
 
-    draw({"test": test, "pred": pred, "diff": diff, "accu": accu}, num)
+    image_path = Path.cwd() / 'results' / 'tables' / 'The relationship v2.png'
+    draw({"test": test, "pred": pred, "diff": diff, "accu": accu}, num, image_path)
