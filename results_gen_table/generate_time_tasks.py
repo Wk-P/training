@@ -46,9 +46,9 @@ def draw(X: list, Y: list, imgpath=None):
 
     ax1: Axes
     ax2: Axes
+    ax3: Axes
     fig: Figure
-    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(18, 8))
-
+    fig, (ax1, ax2, ax3) = plt.subplots(3, 1, figsize=(45, 28))
     # 对数据进行排序（以 num 为依据）
     sorted_indices = np.argsort(num)
     sorted_num = np.array(num)[sorted_indices]
@@ -57,19 +57,20 @@ def draw(X: list, Y: list, imgpath=None):
     sorted_test = np.array(test)[sorted_indices]
     sorted_pred = np.array(pred)[sorted_indices]
 
-
+    # fig 1
     ax1.scatter(sorted_num, sorted_accu, marker='.', color='b', label="accuracy")
 
-
-
-    ax2.scatter(sorted_num, sorted_test, marker='.', color='r', label="accuracy data")
-    ax2.scatter(sorted_num, sorted_pred, marker='.', color='b', label="accuracy data")
+    # fig2
+    ax2.scatter(sorted_num, sorted_test, marker='.', color='b', label="real process time")
+    ax2.scatter(sorted_num, sorted_pred, marker='.', color='r', label="predicted process time")
+    
     ax2.plot(sorted_num, sorted_test, linestyle='-', color='b', alpha=0.2, label="test time")
     ax2.plot(sorted_num, sorted_pred, linestyle='--', color='r', alpha=0.2, label="predicted time")
 
+    # fig3
+    ax3.errorbar(sorted_num, sorted_test, yerr=sorted_diff, fmt='.', color='b', ecolor='lightblue', elinewidth=1, capsize=2, label='Test difference')
+    ax3.errorbar(sorted_num, sorted_pred, yerr=sorted_diff, fmt='.', color='y', ecolor='salmon', elinewidth=1, capsize=2, label='Prediction difference')
 
-    # ax2.errorbar(sorted_num, sorted_test, yerr=sorted_diff, fmt='.', color='b', ecolor='lightblue', elinewidth=1, capsize=2, label='Test Data Error')
-    # ax2.errorbar(sorted_num, sorted_pred, yerr=sorted_diff, fmt='.', color='r', ecolor='salmon', elinewidth=1, capsize=2, label='Pred Data Error')
 
     #@ 标注具体数值
     #@ Annotate specific numerical values
@@ -84,7 +85,7 @@ def draw(X: list, Y: list, imgpath=None):
 
     ax2.set_xlabel('Request Number')
     ax2.set_ylabel('Test and prediction')
-    ax2.set_title('The relationship between processing time and the number of queued tasks on the manager node')
+    ax2.set_title('Prediction of accuracy')
 
     ax1.grid(True, linestyle='--', linewidth=0.5)
     ax2.grid(True, linestyle='--', linewidth=0.5)
@@ -99,6 +100,10 @@ def draw(X: list, Y: list, imgpath=None):
 
     pass
 
+
+
+
+
 if __name__ == "__main__":
     dirpath = Path.cwd() / "results" / "result_processTime_waitTasks"
     file_suffix = ".xlsx"
@@ -112,4 +117,5 @@ if __name__ == "__main__":
     pred = data['prediction']
     diff = data['difference']
 
-    draw({"test": test, "pred": pred, "diff": diff, "accu": accu}, num)
+    image_path = Path.cwd() / 'results' / 'tables' / 'The relationship v2.png'
+    draw({"test": test, "pred": pred, "diff": diff, "accu": accu}, num, image_path)

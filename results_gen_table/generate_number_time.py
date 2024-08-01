@@ -52,8 +52,8 @@ def draw(X: list, Y: list, imgpath=None):
     sorted_test = np.array(test)[sorted_indices]
     sorted_pred = np.array(pred)[sorted_indices]
 
-    ax.scatter(sorted_num, sorted_test, marker='.', color='b', label='test data')
-    ax.scatter(sorted_num, sorted_pred, s=1, marker=',', color='r', label='pred data')
+    ax.scatter(sorted_num, sorted_test, marker='.', color='b', label='real process time')
+    ax.scatter(sorted_num, sorted_pred, s=1, marker=',', color='r', label='pred process time')
 
     ax.plot(sorted_num, sorted_test, linestyle='-', color='b', alpha=0.5)  # 使用透明度线
     ax.plot(sorted_num, sorted_pred, linestyle='--', color='r', alpha=0.5)  # 使用透明度线
