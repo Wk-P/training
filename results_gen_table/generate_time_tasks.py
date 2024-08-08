@@ -107,7 +107,7 @@ def draw(X: list, Y: list, imgpath=None):
 if __name__ == "__main__":
     dirpath = Path.cwd() / "results" / "result_processTime_waitTasks"
     file_suffix = ".xlsx"
-    filename = "RandomRequestNumberclientv5#loops4#requests_batch200#Fri-Jul-26-18-36-52-2024processTime#waitTasks_v2result" + file_suffix 
+    filename = "RandomRequestNumberclientv5#loops4#requests_batch200#Fri-Jul-26-18-36-52-2024processTime#waitTasks_v4result" + file_suffix 
 
     data = read_excel(dirpath, filename)
 
@@ -117,5 +117,5 @@ if __name__ == "__main__":
     pred = data['prediction']
     diff = data['difference']
 
-    image_path = Path.cwd() / 'results' / 'tables' / 'The relationship v2.png'
+    image_path = Path.cwd() / 'results' / 'tables' / 'The relationship v4.png'
     draw({"test": test, "pred": pred, "diff": diff, "accu": accu}, num, image_path)
