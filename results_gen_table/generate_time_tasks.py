@@ -27,14 +27,12 @@ def read_excel(dirpath, filename):
         exit(1)
 
 
-
 def strToFloat(data):
     for index in range(len(data)):
         data_item: str = data[index]
-        data[index] = float(data_item.replace(" ", "").replace("%", ""))
+        data[index] = data_item
 
     return data
-
 
 
 def draw(X: list, Y: list, imgpath=None):
@@ -101,13 +99,13 @@ def draw(X: list, Y: list, imgpath=None):
     pass
 
 
-
-
-
 if __name__ == "__main__":
-    dirpath = Path.cwd() / "results" / "result_processTime_waitTasks"
+    dirpath = Path.cwd().parent / "results" / "result_processTime_waitTasks_v2"
     file_suffix = ".xlsx"
-    filename = "RandomRequestNumberclientv5#loops4#requests_batch200#Fri-Jul-26-18-36-52-2024processTime#waitTasks_v4result" + file_suffix 
+    filename = (
+        "RandomRequestNumberclientv6#loops1#requests_batch500#Mon-Aug-12-05-53-29-2024processTime#waitTasks_v3result"
+        + file_suffix
+    )
 
     data = read_excel(dirpath, filename)
 
@@ -117,5 +115,5 @@ if __name__ == "__main__":
     pred = data['prediction']
     diff = data['difference']
 
-    image_path = Path.cwd() / 'results' / 'tables' / 'The relationship v4.png'
+    image_path = Path.cwd().parent / 'results' / 'tables' / 'The relationship v5.png'
     draw({"test": test, "pred": pred, "diff": diff, "accu": accu}, num, image_path)
